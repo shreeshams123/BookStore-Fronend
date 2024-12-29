@@ -1,0 +1,79 @@
+.books-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    padding: 16px;
+    margin: 0 auto; 
+    max-width: 1200px; 
+    width: 100%; 
+  }
+  
+  .header {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+    gap:8px;
+    padding: 8px 0;
+   
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .item-count {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .book-list {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 16px; 
+    justify-content: space-evenly;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center; /* Centers the paginator horizontally */
+    align-items: center;
+    gap: 10px; /* Add some space between the buttons */
+    margin-top: 20px; /* Adds space between the books list and the paginator */
+  }
+  
+  .pagination-controls button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .pagination-controls button[disabled] {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .page-numbers {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .page-numbers button {
+    padding: 8px 12px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .page-numbers button.active {
+    background-color: #353536;
+    color: white;
+  }
+  

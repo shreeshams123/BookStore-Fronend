@@ -1,0 +1,11 @@
+<div class="book-card">
+    <div class="image-container">
+        <img [src]="'data:image/' + bookDetails.imageFormat + ';base64,' + bookDetails.image" alt="{{ bookDetails.title }}" class="book-image" />
+      </div>
+          <div class="book-info">
+      <p class="title">{{ bookDetails.title }}</p>
+      <p class="author">by {{ bookDetails.author }}</p>
+      <p class="price">Rs.{{ bookDetails.price}}</p>
+    </div>
+  </div>
+  

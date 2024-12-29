@@ -1,0 +1,26 @@
+<div class="books-container">
+    <div class="header">
+      <span class="title">Books</span>
+      <span class="item-count">({{ totalItems }} items)</span>
+    </div>
+  
+    <div class="book-list">
+      <div *ngFor="let book of books" class="book-item">
+        <app-book-card [bookDetails]="book"></app-book-card>
+      </div>
+    </div>
+  
+    <div class="pagination-controls">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  
+      <div class="page-numbers">
+        <button *ngFor="let page of [].constructor(totalPages); let i = index" 
+                (click)="goToPage(i + 1)" [class.active]="i + 1 === currentPage">
+          {{ i + 1 }}
+        </button>
+      </div>
+    </div>
+  </div>
+  
