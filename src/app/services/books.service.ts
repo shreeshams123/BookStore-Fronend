@@ -12,4 +12,8 @@ export class BooksService {
     const params = { pageNumber: pageNumber.toString(), pageSize: pageSize.toString() };
     return this.httpService.getApiCall(`https://localhost:7128/api/getbook`, { params });
   }
+
+  getBookById(bookId:number){
+    return this.httpService.getApiCall(`https://localhost:7128/api/book/${bookId}`)
+  }
 }

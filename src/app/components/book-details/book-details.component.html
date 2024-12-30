@@ -1,0 +1,64 @@
+<div class="breadcrumb">
+    <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Book</span>
+  </div>
+<div class="book-details-container">
+    <div class="book-image-container">
+      <div class="book-image-wrapper">
+        <img [src]="'data:image/' + (bookDetails?.imageFormat || 'jpeg') + ';base64,' + (bookDetails?.image || '')" class="book-image" />
+    </div>
+      
+    <div class="action-buttons">
+      <div *ngIf="bookQuantity > 0; else addToCartTemplate">
+        <button class="btn-circle" (click)="decreaseQuantity()">-</button>
+        <span>{{ bookQuantity }}</span>
+        <button class="btn-circle" (click)="increaseQuantity()">+</button>
+      </div>
+      <ng-template #addToCartTemplate>
+        <button class="btn btn-primary" (click)="toggleCart()">Add to Cart</button>
+      </ng-template>
+      <button class="btn btn-secondary" >Wishlist</button>
+    </div>
+    </div>
+    
+    <div class="book-info-container">
+      <h2>{{ bookDetails?.title }}</h2>
+      <h4>by {{ bookDetails?.author }}</h4>
+      <p class="price">Rs.{{ bookDetails?.price }}</p>
+      
+      <div class="book-details">
+        <h5>Book Details</h5>
+        <p>{{ bookDetails?.description }}</p>
+      </div>
+      <div class="customer-feedback">
+        <h5>Customer Feedback</h5>
+        <div class="feedback-box">
+          <span class="rating-label">Overall Rating</span>
+          <div class="stars">
+            ☆☆☆☆☆
+          </div>
+          <textarea class="feedback-text" placeholder="Write your feedback here..."></textarea>
+          <button class="btn btn-submit">Submit</button>
+        </div>
+      </div>
+      <div class="customer-reviews">
+        
+            <span class="review-name">Ankit</span>
+            <div class="review-stars">
+                ★★★☆☆
+            </div>
+            <p class="review-text">Good Product. Enjoyed reading it.</p>
+       
+    </div>
+    <div class="customer-reviews">
+                <span class="review-name">Shwetha</span>
+            <div class="review-stars">
+                ★★★☆☆
+            </div>
+            <p class="review-text">Good Product. Enjoyed reading it.</p>
+        
+    </div>
+    </div>
+  </div>
+  

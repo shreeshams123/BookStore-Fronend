@@ -12,5 +12,8 @@ export class HttpService {
     getApiCall(url: string,options:any = {}){
       return this.http.get(url,options);
     }
+    postApiCall(url: string, data: any, options: any = {}) {
+      return this.http.post(url, data, options);
+    }
   }
 

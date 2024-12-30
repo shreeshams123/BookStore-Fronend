@@ -1,6 +1,8 @@
 <div class="main-container">
     <mat-toolbar class="custom-toolbar">
       <span style="margin-left: 20px;">BookStore</span>
+      <input [(ngModel)]="searchQuery" (input)="handleSearchQuery()" type="text" style="margin-left: 100px; padding: 5px; width:400px" placeholder="Search">
+
       <span class="example-spacer"></span>
       <div class="icon-container profile" style="margin-right: 20px;">
         <mat-icon class="icon">account_circle</mat-icon>

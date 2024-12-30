@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BooksService } from 'src/app/services/books.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-books-container',
@@ -12,10 +14,14 @@ export class BooksContainerComponent implements OnInit {
   pageSize: number = 15;  
   currentPage: number = 1;  
   totalPages: number = 1;  
-  constructor(private bookService: BooksService) { }
+  searchQuery:string='';
+  subscription!:Subscription;
+  selectedSortOption:string='';
+  constructor(private bookService: BooksService,private dataService:DataService) { }
 
   ngOnInit(): void {
     this.fetchBooks();
+    this.subscription=this.dataService.currSearchQuery.subscribe({next:(res:any)=>this.searchQuery=res});
   }
 
   fetchBooks(): void {
@@ -52,4 +58,13 @@ export class BooksContainerComponent implements OnInit {
       this.fetchBooks();
     }
   }
+  sortBooks(): void {
+    if (this.selectedSortOption === 'lowToHigh') {
+      this.books.sort((a, b) => a.price - b.price);
+    } else if (this.selectedSortOption === 'highToLow') {
+      this.books.sort((a, b) => b.price - a.price);
+    }
+  }
+
+ 
 }
