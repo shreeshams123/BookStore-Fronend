@@ -5,6 +5,8 @@ import { BookCardComponent } from './components/book-card/book-card.component';
 import { BooksContainerComponent } from './components/books-container/books-container.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
+import { CartContainerComponent } from './components/cart-container/cart-container.component';
+import { WishlistContainerComponent } from './components/wishlist-container/wishlist-container.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,14 @@ const routes: Routes = [
       {
         path:'book-details/:id',
         component:BookDetailsComponent
+      },
+      {
+        path:'cart',
+        component:CartContainerComponent
+      },
+      {
+        path:'wishlist',
+        component:WishlistContainerComponent
       }
     ]
   },

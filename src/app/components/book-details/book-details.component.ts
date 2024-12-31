@@ -13,59 +13,69 @@ export class BookDetailsComponent implements OnInit{
   bookId:number|null=null;
   bookDetails:any={};
   bookQuantity:number=0;
+  isInWishlist:boolean=false;
   constructor(private route:ActivatedRoute,private bookService:BooksService,public router:Router,private cartService:CartService,private wishlistService:WishlistService){
 
   }
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.bookId = id ? +id : null;
-    if (this.bookId !== null) {
-      this.bookService.getBookById(this.bookId).subscribe({
-        next: (res: any) => {
-          this.bookDetails=res.data;
-          this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.id);
-          console.log(this.bookDetails);
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      });
-    } else {
-      console.error('Invalid book ID');
-    }
-      
-  }
-  toggleCart() {
-    if (this.bookQuantity === 0) {
-      // Add the whole book object with a quantity of 1
-      this.cartService.addToCart({ ...this.bookDetails, quantity: 1 });
-    } else {
-      // Add the book to cart with an updated quantity
-      this.cartService.addToCart({ ...this.bookDetails, quantity: 1 });
-    }
-    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.id);
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      this.bookId = id ? +id : null;
+
+      if (this.bookId !== null) {
+        this.loadBookDetails(this.bookId);
+      } else {
+        console.error('Invalid book ID');
+      }
+    });
   }
 
+  private loadBookDetails(bookId: number) {
+    this.bookService.getBookById(bookId).subscribe({
+      next: (res: any) => {
+        this.bookDetails = res.data;
+        this.bookQuantity = this.cartService.getBookQuantity(bookId); 
+        this.isInWishlist=this.wishlistService.isInWishlist(bookId);
+        console.log('Loaded Book Details:', this.bookDetails);
+        console.log('Loaded Quantity for Current Book:', this.bookQuantity);
+        console.log('is in wishlist',this.isInWishlist);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  addToCart() {
+    this.cartService.addToCart(this.bookDetails, 1); 
+    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
+    console.log('Added to Cart. Current Quantity:', this.bookQuantity);
+  }
+  
   decreaseQuantity() {
-    if (this.bookQuantity > 1) {
-      this.cartService.addToCart({ ...this.bookDetails, quantity: -1 });
-      this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.id);
-      console.log(this.cartService.getBookQuantity(this.bookDetails.id));
-    } else {
-      this.cartService.removeFromCart(this.bookDetails.id);
-      this.bookQuantity = 0;
-      console.log(this.cartService.getBookQuantity(this.bookDetails.id));
-    }
+    this.cartService.addToCart(this.bookDetails, -1); 
+    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
+    console.log('Decreased Quantity. Current Quantity:', this.bookQuantity);
   }
-
+  
   increaseQuantity() {
-    this.cartService.addToCart({ ...this.bookDetails, quantity: 1 });
-    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.id);
-    console.log(this.cartService.getBookQuantity(this.bookDetails.id));
+    this.cartService.addToCart(this.bookDetails, 1); 
+    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
+    console.log('Increased Quantity. Current Quantity:', this.bookQuantity);
   }
 
-  // addToWishList(){
-  //   this.wishlistService.addToWishlist()
-  // }
- 
+
+  
+
+  toggleWishlist() {
+    if (this.isInWishlist) {
+      this.wishlistService.removeFromWishlist(this.bookDetails.bookId);
+    } else {
+      this.wishlistService.addToWishlist(this.bookDetails);
+    }
+    
+    this.isInWishlist = this.wishlistService.isInWishlist(this.bookDetails.bookId);
+    console.log('isInWishlist after toggle:', this.isInWishlist);
+  }
+  
 }

@@ -19,4 +19,10 @@ export class DashboardComponent implements OnInit {
     this.dataService.updateSearchQuery(this.searchQuery)
   }
 
+  onClickCart(){
+    this.router.navigate(["/cart"]);
+  }
+  navigateToWishlist(){
+    this.router.navigate(["/wishlist"])
+  }
 }

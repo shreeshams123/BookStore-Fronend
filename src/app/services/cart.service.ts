@@ -6,36 +6,37 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  private cart: any[] = []; 
+  private cart: { [key: number]: { details: any; quantity: number } } = {}; // Object to store book details and quantity
 
-  constructor() { }
+  constructor() {}
 
-  addToCart(book: any) {
-    const existingBookIndex = this.cart.findIndex(item => item.id === book.id);
-    if (existingBookIndex !== -1) {
-      this.cart[existingBookIndex].quantity += book.quantity;
-    } else {
-      this.cart.push({ ...book, quantity: book.quantity });
+  addToCart(book: any, quantity: number) {
+    const bookId = book.bookId;
+  
+    if (!bookId) {
+      console.error('Book ID is undefined:', book);
+      return;
     }
-  }
-
-  removeFromCart(bookId: number) {
-    const index = this.cart.findIndex(item => item.id === bookId);
-    if (index !== -1) {
-      this.cart.splice(index, 1);
+  
+    if (this.cart[bookId]) {
+      const newQuantity = this.cart[bookId].quantity + quantity;
+      if (newQuantity > 0) {
+        this.cart[bookId].quantity = newQuantity;
+      } else {
+        delete this.cart[bookId]; 
+      }
+    } else if (quantity > 0) {
+      this.cart[bookId] = { details: book, quantity };
     }
+    console.log('Updated Cart:', this.cart);
   }
-
+  
   getBookQuantity(bookId: number): number {
-    const book = this.cart.find(item => item.id === bookId);
-    return book ? book.quantity : 0;
+    return this.cart[bookId] ? this.cart[bookId].quantity : 0;
   }
-
-  getBookDetails(bookId: number): any {
-    return this.cart.find(item => item.id === bookId);
-  }
-
+  
   getCart() {
-    return this.cart;
-  }
+    const cart = Object.values(this.cart);
+    console.log('Cart Data:', cart);
+    return cart;  }
 }

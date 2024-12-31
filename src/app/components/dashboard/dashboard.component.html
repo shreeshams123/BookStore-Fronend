@@ -4,11 +4,14 @@
       <input [(ngModel)]="searchQuery" (input)="handleSearchQuery()" type="text" style="margin-left: 100px; padding: 5px; width:400px" placeholder="Search">
 
       <span class="example-spacer"></span>
-      <div class="icon-container profile" style="margin-right: 20px;">
+      <div class="icon-container profile" [matMenuTriggerFor]="profileMenu" style="margin-right: 20px; cursor: pointer;">
         <mat-icon class="icon">account_circle</mat-icon>
         <div class="label">Profile</div>
       </div>
-      <div class="icon-container cart" style="margin-right: 20px;">
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item (click)="navigateToWishlist()">My Wishlist</button>
+      </mat-menu>
+      <div class="icon-container cart" (click)="onClickCart()" style="margin-right: 20px;">
         <mat-icon class="icon">shopping_cart</mat-icon>
         <div class="label">Cart</div>
       </div>

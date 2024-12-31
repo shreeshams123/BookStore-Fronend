@@ -16,7 +16,10 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { CartContainerComponent } from './components/cart-container/cart-container.component';
+import { CartItemComponent } from './components/cart-item/cart-item.component';
+import { WishlistContainerComponent } from './components/wishlist-container/wishlist-container.component';
+import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,10 +28,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     BooksContainerComponent,
     BookDetailsComponent,
     SearchPipe,
-    LoginSignupComponent
+    LoginSignupComponent,
+    CartContainerComponent,
+    CartItemComponent,
+    WishlistContainerComponent
   ],
   imports: [
     BrowserModule,
+    MatMenuModule,
     ReactiveFormsModule,
     AppRoutingModule,
     MatToolbarModule,

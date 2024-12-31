@@ -1,0 +1,22 @@
+<div class="breadcrumb">
+    <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Book</span>
+  </div>
+  
+  <div class="cart-container">
+    <h3 style="font-weight: bold; display: block; margin-bottom: 20px;">My Cart</h3>
+    <div *ngIf="cartItems.length > 0; else emptyCart">
+      <div *ngFor="let item of cartItems">
+        <app-cart-item [item]="item" (updateList)="handleUpdateCartList($event)"></app-cart-item>
+      </div>
+      <div>
+        <span>Customer Details</span>
+        
+      </div>
+    </div>
+    <ng-template #emptyCart>
+      <p class="empty-cart-message">Your cart is empty.</p>
+    </ng-template>
+  </div>
+  

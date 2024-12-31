@@ -1,0 +1,31 @@
+<div class="cart-item-card">
+    <img [src]="'data:image/' + (item.imageFormat || 'jpeg') + ';base64,' + (isWishlist ? (item.image || '') : (item?.details.image || ''))" 
+    class="cart-item-image" />
+
+    <div class="cart-item-details">
+        <h3 class="cart-item-title">{{ isWishlist ? item.title : item.details?.title }}</h3>
+
+        <p class="cart-item-author" *ngIf="isWishlist ? item.author : item.details?.author">
+          by {{ isWishlist ? item.author : item.details?.author }}
+        </p>
+    
+        <p class="cart-item-price">Rs.{{ isWishlist ? item.price : item.details?.price }}</p>
+  
+      <div class="cart-item-actions">
+        <ng-container *ngIf="!isWishlist; else wishlistActions">
+          <span class="quantity-label">Quantity:</span>
+          <button (click)="updateQuantity(-1)" class="quantity-button">-</button>
+          <span class="quantity-value">{{ item.quantity }}</span>
+          <button (click)="updateQuantity(1)" class="quantity-button">+</button>
+          <button (click)="removeItem()" class="remove-button">Remove</button>
+        </ng-container>
+  
+        <ng-template #wishlistActions>
+            <button mat-icon-button aria-label="delete button" matTooltip="Delete Options" (click)="handleDeleteFromWishlist()" >
+                <mat-icon svgIcon="delete-forever-icon" aria-hidden="false" aria-label="delete-forever-icon button icon"></mat-icon>
+            </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

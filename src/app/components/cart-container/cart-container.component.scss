@@ -1,0 +1,50 @@
+.breadcrumb {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .breadcrumb-home {
+    color: grey;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .breadcrumb-home:hover {
+    color: black;
+  }
+  
+  .breadcrumb-separator {
+    color: grey;
+  }
+  
+  .breadcrumb-current {
+    color: black;
+    font-weight: bold;
+  }
+  
+  .cart-container {
+    max-width: 800px; /* Constrain the width of the cart */
+    margin: 20px auto; /* Center the container horizontally and add vertical spacing */
+    border: 1px solid #ddd; /* Add a border around the container */
+    border-radius: 8px; /* Slightly round the corners */
+    background-color: #fff; /* White background for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    overflow: hidden; /* Ensure content stays within the borders */
+    padding: 20px; /* Add padding inside the container */
+  }
+  
+  .empty-cart-message {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin: 20px 0;
+    font-weight: bold;
+  }
+  

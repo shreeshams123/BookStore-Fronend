@@ -16,10 +16,12 @@
         <button class="btn-circle" (click)="increaseQuantity()">+</button>
       </div>
       <ng-template #addToCartTemplate>
-        <button class="btn btn-primary" (click)="toggleCart()">Add to Cart</button>
+        <button class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
       </ng-template>
-      <button class="btn btn-secondary" >Wishlist</button>
-    </div>
+      <button class="btn btn-secondary" (click)="toggleWishlist()">
+        {{ isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' }}
+    </button>   
+   </div>
     </div>
     
     <div class="book-info-container">

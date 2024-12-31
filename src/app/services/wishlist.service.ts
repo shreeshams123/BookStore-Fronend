@@ -4,30 +4,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class WishlistService {
-  private wishlist: any[] = []; 
+  private wishlist: any[] = [];  
 
-  constructor() { }
+  constructor() {}
 
-  addToWishlist(book: any) {
-    const existingBook = this.wishlist.find(item => item.id === book.id);
-    
-    if (!existingBook) {
-      this.wishlist.push(book);
-    }
+  isInWishlist(bookId: number): boolean {
+    return this.wishlist.some((book) => book.bookId === bookId); 
   }
 
-  removeFromWishList(bookId: number) {
-    this.wishlist = this.wishlist.filter(item => item.id !== bookId);
+  addToWishlist(bookDetails: any): void {
+    if (!this.isInWishlist(bookDetails.bookId)) {
+      this.wishlist.push(bookDetails);
+    }
+    console.log(this.wishlist);
   }
 
-  isBookPresent(book:any){
-    const existingBook = this.wishlist.find(item => item.id === book.id);
-    if(existingBook){
-      return true;
-    }
-    else{
-      return false;
-    }
+  removeFromWishlist(bookId: number): void {
+    this.wishlist = this.wishlist.filter((book) => book.bookId !== bookId);
+  }
+
+  getWishlist(): any[] {
+    return this.wishlist;
   }
  
 }

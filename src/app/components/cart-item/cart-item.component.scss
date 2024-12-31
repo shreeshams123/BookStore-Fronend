@@ -1,0 +1,96 @@
+.cart-item-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;  
+  }
+  
+
+  .cart-item-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain; 
+    margin-right: 50px;
+    
+  }
+  
+  .cart-item-details {
+    flex: 1; 
+  }
+  
+  .cart-item-title {
+    font-size: 18px;
+    margin: 0 0 5px;
+    font-weight: bold;
+  }
+  
+  .cart-item-author {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 10px;
+  }
+  
+  .cart-item-price {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 10px;
+  }
+  
+  .cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .quantity-label {
+    font-size: 14px;
+    margin-right: 5px;
+  }
+  
+  .quantity-button {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .quantity-button:hover {
+    background-color: #eaeaea;
+  }
+  
+  .quantity-value {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .remove-button {
+    background-color: #000000;
+    margin-left: 10px;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .remove-button:hover {
+    background-color: #000000;
+  }
+  
+  .wishlist-delete-button {
+    background-color: #f44336; /* Red color for delete */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .wishlist-delete-button:hover {
+    background-color: #d32f2f; /* Darker red for hover effect */
+  }
+  
+  .fa-trash-alt {
+    font-size: 16px;
+  }
+  
