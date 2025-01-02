@@ -13,8 +13,8 @@ import{DELETE_FOREVER_ICON} from 'src/assets/svg-icons';
 export class CartItemComponent {
   @Input() item: any; 
   @Input() isWishlist:any;
+  @Input() isOrder:any;
   @Output() updateList=new EventEmitter();
-  @Output() updateOrderList=new EventEmitter();
 
   constructor(private iconRegistry: MatIconRegistry,private sanitizer: DomSanitizer,private cartService: CartService,private wishlistService:WishlistService) {
     iconRegistry.addSvgIconLiteral('delete-forever-icon', sanitizer.bypassSecurityTrustHtml(DELETE_FOREVER_ICON));

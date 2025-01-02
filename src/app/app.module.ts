@@ -20,6 +20,12 @@ import { CartContainerComponent } from './components/cart-container/cart-contain
 import { CartItemComponent } from './components/cart-item/cart-item.component';
 import { WishlistContainerComponent } from './components/wishlist-container/wishlist-container.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { AddressItemComponent } from './components/address-item/address-item.component';
+import { OrderSuccessComponent } from './components/order-success/order-success.component';
+import { OrderContainerComponent } from './components/order-container/order-container.component';
+import { MatInputModule } from '@angular/material/input';
+import { LoginPromptComponent } from './components/login-prompt/login-prompt.component';
+import { ProfileComponent } from './components/profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +37,12 @@ import {MatMenuModule} from '@angular/material/menu';
     LoginSignupComponent,
     CartContainerComponent,
     CartItemComponent,
-    WishlistContainerComponent
+    WishlistContainerComponent,
+    AddressItemComponent,
+    OrderSuccessComponent,
+    OrderContainerComponent,
+    LoginPromptComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +55,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatIconModule,
     HttpClientModule,
     FormsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

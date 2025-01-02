@@ -6,11 +6,25 @@
       <span class="example-spacer"></span>
       <div class="icon-container profile" [matMenuTriggerFor]="profileMenu" style="margin-right: 20px; cursor: pointer;">
         <mat-icon class="icon">account_circle</mat-icon>
-        <div class="label">Profile</div>
+        <div class="label">
+          {{ username ? username : 'Profile' }}
+        </div>
       </div>
       <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item (click)="navigateToWishlist()">My Wishlist</button>
+        <ng-container *ngIf="isLoggedIn; else loggedOutMenu">
+          <button mat-menu-item (click)="navigateTo('/profile')">Profile</button>
+          <button mat-menu-item (click)="navigateTo('/wishlist')">My Wishlist</button>
+          <button mat-menu-item (click)="navigateTo('/orders')">My Orders</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </ng-container>
+      
+        <ng-template #loggedOutMenu>
+          <button mat-menu-item (click)="navigateTo('/wishlist')">My Wishlist</button>
+          <button mat-menu-item (click)="navigateTo('/orders')">My Orders</button>
+          <button mat-menu-item (click)="navigateTo('login-signup')">Login/Signup</button>
+        </ng-template>
       </mat-menu>
+      
       <div class="icon-container cart" (click)="onClickCart()" style="margin-right: 20px;">
         <mat-icon class="icon">shopping_cart</mat-icon>
         <div class="label">Cart</div>

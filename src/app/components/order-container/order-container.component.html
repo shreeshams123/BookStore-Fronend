@@ -1,0 +1,34 @@
+<div class="breadcrumb">
+    <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Order</span>
+  </div>
+<div class="order-container card">
+    <div *ngIf="orderItems.length>0 else emptyCart">
+    <h3 class="order-title">Order Details</h3>
+  
+    <div *ngFor="let order of orderItems" class="order">
+      <div *ngFor="let item of order.items" class="order-item">
+        <div class="order-item-image-container">
+          <img
+            [src]="'data:image/jpeg;base64,' + item.details.image"
+            alt="Book Image"
+            class="order-item-image"
+          />
+        </div>
+  
+        <div class="item-info">
+          <h4 class="order-item-title">{{ item.details.title }}</h4>
+          <p class="order-item-author">by {{ item.details.author }}</p>
+          <p class="order-item-price">Price: Rs.{{ item.details.price }}</p>
+          <p class="order-item-quantity">Quantity: {{ item.quantity }}</p>
+          <p class="order-item-orderDate">Order Date: {{ order.orderDate | date: 'mediumDate' }}</p>
+        </div>
+      </div>
+    </div>
+</div>
+    <ng-template #emptyCart>
+        <p class="empty-cart-message">Your order list is empty.</p>
+      </ng-template>
+  </div>
+  

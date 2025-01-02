@@ -4,14 +4,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class OrderService {
-  private orders: any[] = []; 
+  private orderList: any[] = [];
 
-  addOrder(items: any[]): void {
-    this.orders.push(...items); 
-    console.log('Order placed:', this.orders); 
+  addOrder(order: any) {
+    this.orderList.push(order);
   }
 
-  getOrders(): any[] {
-    return [...this.orders]; 
+  getOrders() {
+    return this.orderList;
   }
 }

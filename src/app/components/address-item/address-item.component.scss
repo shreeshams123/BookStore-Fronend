@@ -1,0 +1,60 @@
+.address-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  
+    .address-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+  
+      input[type='radio'] {
+        margin-right: 8px;
+      }
+  
+      .address-type {
+        font-weight: bold;
+        margin-right: auto;
+      }
+  
+      .edit-button {
+       
+        color: red;
+        border: none;
+        cursor: pointer;
+        background-color: white;
+        
+      }
+    }
+  
+    .address-details, .edit-fields {
+      margin-bottom: 5px;
+  
+      .label {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+  
+      .field {
+        margin-bottom: 10px;
+  
+        label {
+          display: block;
+          font-weight: bold;
+        }
+  
+        input {
+          width: 50%;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+      }
+    }
+  
+    .location {
+      font-style: italic;
+    }
+  }
+  

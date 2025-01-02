@@ -1,0 +1,38 @@
+<div class="address-item">
+    <div class="address-header">
+        <input type="radio" name="address" [value]="item.id" (change)="onAddressSelect()">
+        <span class="address-type">{{ item.type }}</span>
+      <button class="edit-button" (click)="toggleEdit()">
+        {{ isEditing ? 'Save' : 'Edit' }}
+      </button>
+    </div>
+  
+    <div *ngIf="!isEditing; else editMode">
+      <div class="address-details">
+        <label class="label">Address:</label>
+        <span class="address">{{ item.address }}</span>
+      </div>
+      <div class="location">
+        <span class="city">{{ item.city }}</span>, 
+        <span class="state">{{ item.state }}</span>
+      </div>
+    </div>
+  
+    <ng-template #editMode>
+      <div class="edit-fields">
+        <div class="field">
+          <label for="address">Address:</label>
+          <input type="text" id="address" [(ngModel)]="editAddress" />
+        </div>
+        <div class="field">
+          <label for="city">City:</label>
+          <input type="text" id="city" [(ngModel)]="editCity" />
+        </div>
+        <div class="field">
+          <label for="state">State:</label>
+          <input type="text" id="state" [(ngModel)]="editState" />
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  

@@ -1,19 +1,18 @@
 <div class="breadcrumb">
-    <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
-    <span class="breadcrumb-separator">/</span>
-    <span class="breadcrumb-current">Book</span>
-  </div>
+  <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
+  <span class="breadcrumb-separator">/</span>
+  <span class="breadcrumb-current">Wishlist</span>
+</div>
 <div class="wishlist-container">
-    <h3 style="font-weight: bold; display: block; margin-bottom: 20px;">My WishList</h3>
-      <div *ngIf="wishListItems.length > 0; else emptyWishlist">
-      <div *ngFor="let item of wishListItems">
-        <app-cart-item [item]="item" [isWishlist]="true" (updateList)="handleUpdateWishList($event)">
-        </app-cart-item>
-      </div>
+  <h3 style="font-weight: bold; display: block; margin-bottom: 20px;">My WishList</h3>
+    <div *ngIf="wishListItems.length > 0; else emptyWishlist">
+    <div *ngFor="let item of wishListItems">
+      <app-cart-item [item]="item" [isWishlist]="true" (updateList)="handleUpdateWishList($event)">
+      </app-cart-item>
     </div>
-  
-    <ng-template #emptyWishlist>
-      <p class="empty-wishlist-message">Your wishlist is empty.</p>
-    </ng-template>
   </div>
-  
+
+  <ng-template #emptyWishlist>
+    <p class="empty-wishlist-message">Your wishlist is empty.</p>
+  </ng-template>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,20 +11,52 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class DashboardComponent implements OnInit {
   searchQuery:string='';
-  constructor(private router:Router,private dataService:DataService){
+  isLoggedIn:boolean=false;
+  username: string | null = null;
+  subscription!:Subscription
+  constructor(private router:Router,private dataService:DataService,public userService:UserService){
 
   }
   ngOnInit(): void {
-   this.router.navigate(["/books-container"])
+    this.router.navigate(['/books-container']); 
+    this.subscription = this.userService.currUserDetails.subscribe((user) => {
+      if (user && user.token) {
+        this.username = user.name;
+        this.isLoggedIn = true;
+      } else {
+        this.isLoggedIn = false;
+      }
+    });
   }
   handleSearchQuery() {
     this.dataService.updateSearchQuery(this.searchQuery)
   }
 
   onClickCart(){
+    this.userService.currUserDetails.subscribe(user => {
+      if (user && user.token) {
     this.router.navigate(["/cart"]);
+    }else{
+      this.router.navigate(["login-prompt"]);
+    }});
   }
-  navigateToWishlist(){
-    this.router.navigate(["/wishlist"])
+  
+  navigateTo(path: string): void {
+    this.userService.currUserDetails.subscribe(user => {
+      if (user && user.token) {
+        this.router.navigate([path]);  
+      } else {
+        this.router.navigate(['login-prompt']);  
+      }
+    });
   }
+  
+  logout(): void {
+    localStorage.clear();
+    this.userService.updateUserDetails(null);  
+    this.username = null;
+    this.isLoggedIn = false;
+    this.router.navigate(["/books-container"]);  
+  }
+  
 }

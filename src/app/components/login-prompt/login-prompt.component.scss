@@ -1,0 +1,33 @@
+.login-prompt-card {
+    width: 300px; /* Set a fixed width for the card */
+    margin: 50px auto; /* Center the card horizontally and add vertical spacing */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-color: white;
+  }
+  
+  .login-prompt-card p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+.login-button {
+    padding: 10px 20px;
+    background-color: white; /* Keep the background white */
+    color: red; /* Set the text color */
+    border: 2px solid red; /* Add a visible border */
+    border-radius: 5px; /* Round the corners slightly */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: red; /* Change background color on hover */
+    color: white; /* Change text color on hover */
+  }
+  

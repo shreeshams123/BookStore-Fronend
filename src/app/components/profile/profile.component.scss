@@ -1,0 +1,115 @@
+.container {
+    max-width: 400px; 
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .customer-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .customer-details-header span {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .add-address-btn {
+   
+    color: red;
+    border: red;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Headings styling */
+  h2, h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  /* Form styling */
+  .profile-form, .add-address-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .static-value, input {
+    width: 100%; /* Make inputs and static values occupy full width */
+    padding: 10px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Inline fields for city and state */
+  .form-group-inline {
+    display: flex;
+    gap: 10px; /* Space between city and state fields */
+  }
+  
+  .form-inline-item input {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust gap between radio buttons */
+  }
+  
+  .radio-group input[type="radio"] {
+    margin: 0; /* Remove default margin of radio buttons */
+    padding: 0; /* Remove any padding */
+  }
+  
+  .radio-group label {
+    margin: 0; /* Remove default margin of the label */
+    padding-left: 5px; /* Add minimal space between radio button and label */
+    font-size: 14px; /* Adjust label font size if needed */
+  }
+  
+  
+  /* Action buttons */
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .btn-save, .btn-cancel {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    border: none;
+  }
+  
+  .btn-save {
+    background-color: black;
+  }
+  
+  .btn-cancel {
+    background-color: black;
+  }
+  

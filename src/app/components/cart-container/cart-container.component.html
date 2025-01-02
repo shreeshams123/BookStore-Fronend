@@ -1,22 +1,142 @@
 <div class="breadcrumb">
-    <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
-    <span class="breadcrumb-separator">/</span>
-    <span class="breadcrumb-current">Book</span>
-  </div>
-  
-  <div class="cart-container">
-    <h3 style="font-weight: bold; display: block; margin-bottom: 20px;">My Cart</h3>
-    <div *ngIf="cartItems.length > 0; else emptyCart">
-      <div *ngFor="let item of cartItems">
-        <app-cart-item [item]="item" (updateList)="handleUpdateCartList($event)"></app-cart-item>
-      </div>
-      <div>
-        <span>Customer Details</span>
-        
-      </div>
+  <span class="breadcrumb-home" (click)="this.router.navigate(['/books-container'])">Home</span>
+  <span class="breadcrumb-separator">/</span>
+  <span class="breadcrumb-current">Cart</span>
+</div>
+
+<div class="cart-container">
+  <span style="font-weight: bold; display: block; margin-bottom: 20px; font-size: 18px;">My Cart</span>
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <div *ngFor="let item of cartItems">
+      <app-cart-item [item]="item" (updateList)="handleUpdateCartList($event)"></app-cart-item>
     </div>
-    <ng-template #emptyCart>
-      <p class="empty-cart-message">Your cart is empty.</p>
-    </ng-template>
   </div>
+  <ng-template #emptyCart>
+    <p class="empty-cart-message">Your cart is empty.</p>
+  </ng-template>
+  <div class="button-container">
+    <button class="button-cart" (click)="toggleExpand()" *ngIf="cartItems.length>0 && !isExpanded">Place Order</button>
+  </div>
+</div>
+<div class="compact-note" *ngIf="!isExpanded && cartItems.length>0">
+  <span>Address Details</span>
+</div>
+<div class="expanded-note" *ngIf="isExpanded">
+<div class="customer-details-header">
+  <span>Customer Details</span>
+  <button class="add-address-btn" (click)="toggleAddAddress()">Add New Address</button>
+</div>
+
+<div class="static-details">
+  <div>
+    <label>Name:</label>
+    <span>{{ username }}</span>
+  </div>
+  <div>
+    <label>Mobile Number:</label>
+    <span>{{ phone }}</span>
+  </div>
+</div>
+
+<div class="add-address-form" *ngIf="isAddingAddress">
+  <div class="form-group">
+    <label for="address">Address:</label>
+    <input
+      id="address"
+      [(ngModel)]="newAddress.address"
+      placeholder="Enter address"
+      required
+    />
+  </div>
+
+  <div class="form-group-inline">
+    <div class="form-inline-item">
+      <label for="city">City:</label>
+      <input
+        id="city"
+        [(ngModel)]="newAddress.city"
+        placeholder="Enter city"
+        required
+      />
+    </div>
+    <div class="form-inline-item">
+      <label for="state">State:</label>
+      <input
+        id="state"
+        [(ngModel)]="newAddress.state"
+        placeholder="Enter state"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label style="margin-top: 10px;">Type:</label>
+    <div class="radio-group">
+      <input
+        type="radio"
+        id="work"
+        name="type"
+        value="Work"
+        [(ngModel)]="newAddress.type"
+      />
+      <label for="work">Work</label>
+
+      <input
+        type="radio"
+        id="home"
+        name="type"
+        value="Home"
+        [(ngModel)]="newAddress.type"
+      />
+      <label for="home">Home</label>
+
+      <input
+        type="radio"
+        id="others"
+        name="type"
+        value="Others"
+        [(ngModel)]="newAddress.type"
+      />
+      <label for="others">Others</label>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn-save" (click)="addAddress()">Save</button>
+    <button class="btn-cancel" (click)="toggleAddAddress()">Cancel</button>
+  </div>
+</div>
+
+
+
+<div *ngIf="addresses.length > 0">
+  <div *ngFor="let addressitem of addresses">
+    <app-address-item (addressSelected)="handleaddresslist($event)" [item]="addressitem"></app-address-item>
+  </div>
+
+  <div *ngIf=!showOrderSummary class="button-container">
+    <button class="button-cart" (click)="showOrderSummarySection()">Continue</button>
+  </div>
+</div>
+</div>
+
+<div class="order-summary" *ngIf="showOrderSummary">
+<span >Order Summary</span>
+<div class="order-item" *ngFor="let item of cartItems">
+  <img [src]="'data:image/' + (item.imageFormat || 'jpeg') + ';base64,' +  item?.details.image || ''" >
+  <div class="order-details">
+    <p><strong>Title:</strong> {{ item.details.title }}</p>
+    <p><strong>Author:</strong> {{ item.details.author }}</p>
+    <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+    <p><strong>Price:</strong> {{ item.details.price | currency }}</p>
+  </div>
+</div>
+<div class="total-price">
   
+</div>
+<h3>Total Price:{{ totalPrice}}</h3>
+<div class="button-container">
+  <button class="button-cart"(click)="checkOut()">CheckOut</button>
+</div>
+</div>

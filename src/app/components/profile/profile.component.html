@@ -1,0 +1,89 @@
+<div class="container">
+    <h2>Profile Details</h2>
+    <form class="profile-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <div class="static-value">{{username}}</div>
+      </div>
+  
+      <div class="form-group">
+        <label for="mobile">Mobile Number</label>
+        <div class="static-value">{{phone}}</div>
+      </div>
+  
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="static-value">********</div>
+      </div>
+  
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="static-value">{{email}}</div>
+      </div>
+    </form>
+  
+    <div class="customer-details-header">
+        <span>Address Details</span>
+        <button class="add-address-btn" (click)="toggleAddAddress()">Add New Address</button>
+      </div>
+    <div class="add-address-form" *ngIf="isAddingAddress">
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input
+          id="address"
+          [(ngModel)]="newAddress.address"
+          placeholder="Enter address"
+          required
+        />
+      </div>
+  
+      <div class="form-group-inline">
+        <div class="form-inline-item">
+          <label for="city">City:</label>
+          <input
+            id="city"
+            [(ngModel)]="newAddress.city"
+            placeholder="Enter city"
+            required
+          />
+        </div>
+        <div class="form-inline-item">
+          <label for="state">State:</label>
+          <input
+            id="state"
+            [(ngModel)]="newAddress.state"
+            placeholder="Enter state"
+            required
+          />
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Type:</label>
+        <div class="radio-group">
+          <input type="radio" id="work" name="type" value="Work" [(ngModel)]="newAddress.type" />
+          <label for="work">Work</label>
+  
+          <input type="radio" id="home" name="type" value="Home" [(ngModel)]="newAddress.type" />
+          <label for="home">Home</label>
+  
+          <input type="radio" id="others" name="type" value="Others" [(ngModel)]="newAddress.type" />
+          <label for="others">Others</label>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button class="btn-save" (click)="addAddress()">Save</button>
+        <button class="btn-cancel" (click)="toggleAddAddress()">Cancel</button>
+      </div>
+    </div>
+  
+    <div *ngIf="addresses.length > 0">
+      <div *ngFor="let addressitem of addresses">
+        <app-address-item
+          [item]="addressitem"
+        ></app-address-item>
+      </div>
+    </div>
+  </div>
+  

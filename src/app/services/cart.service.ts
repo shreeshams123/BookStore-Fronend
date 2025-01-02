@@ -6,9 +6,9 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  private cart: { [key: number]: { details: any; quantity: number } } = {}; // Object to store book details and quantity
+  private cart: { [key: number]: { details: any; quantity: number } } = {}; 
 
-  constructor() {}
+  constructor(private httpService:HttpService) {}
 
   addToCart(book: any, quantity: number) {
     const bookId = book.bookId;
@@ -39,4 +39,34 @@ export class CartService {
     const cart = Object.values(this.cart);
     console.log('Cart Data:', cart);
     return cart;  }
+    clearCart(){
+      this.cart=[];
+    }
+
+    getAuthorization() {
+      const userDetails = localStorage.getItem('userDetails'); 
+      if (userDetails) {
+        const parsedUser = JSON.parse(userDetails);
+        const token = parsedUser.token; 
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+        });
+        return headers;
+      } else{
+        return new HttpHeaders();
+      }
+    }
+    addToCartApiCall(data:any){
+      return this.httpService.postApiCall("https://localhost:7128/api/cart",data,{ headers: this.getAuthorization() });
+    }
+    getCartApiCall(){
+      return this.httpService.getApiCall("https://localhost:7128/api/cart",{ headers: this.getAuthorization() });
+    }
+    updateCartApiCall(data:any){
+      return this.httpService.patchApiCall("https://localhost:7128/api/cart/update",data,{ headers: this.getAuthorization() });
+    }
+    deleteFromCartApiCall(data:any){
+      return this.httpService.deleteApiCall(`https://localhost:7128/api/cart/${data}`,{ headers: this.getAuthorization() });
+
+    }
 }
