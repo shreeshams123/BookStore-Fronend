@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CartService } from 'src/app/services/cart.service';
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -12,9 +13,9 @@ import { UserService } from 'src/app/services/user.service';
 export class DashboardComponent implements OnInit {
   searchQuery:string='';
   isLoggedIn:boolean=false;
-  username: string | null = null;
+  username: any
   subscription!:Subscription
-  constructor(private router:Router,private dataService:DataService,public userService:UserService){
+  constructor(private router:Router,private dataService:DataService,public userService:UserService,private cartService:CartService){
 
   }
   ngOnInit(): void {
@@ -33,12 +34,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onClickCart(){
-    this.userService.currUserDetails.subscribe(user => {
-      if (user && user.token) {
     this.router.navigate(["/cart"]);
-    }else{
-      this.router.navigate(["login-prompt"]);
-    }});
   }
   
   navigateTo(path: string): void {
@@ -53,7 +49,8 @@ export class DashboardComponent implements OnInit {
   
   logout(): void {
     localStorage.clear();
-    this.userService.updateUserDetails(null);  
+    this.userService.updateUserDetails(null); 
+    this.cartService.clearCart();
     this.username = null;
     this.isLoggedIn = false;
     this.router.navigate(["/books-container"]);  

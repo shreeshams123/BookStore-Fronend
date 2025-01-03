@@ -12,9 +12,9 @@ export class ProfileComponent implements OnInit {
 addresses:any
 isAddingAddress:Boolean=false;
 subscription!:Subscription
-username:string|null='';
-phone:string|null='';
-email:string|null='';
+username:any='';
+phone:any='';
+email:any='';
 newAddress = {
   type: '',
   address: '',

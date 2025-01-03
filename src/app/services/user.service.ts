@@ -3,10 +3,10 @@ import { HttpService } from './http.service';
 import { BehaviorSubject } from 'rxjs';
 
 export interface User {
-  name: string | null;
-  phone: string | null;
-  email: string | null;
-  token:string|null;
+  name?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  token?:string|null;
 }
 @Injectable({
   providedIn: 'root'

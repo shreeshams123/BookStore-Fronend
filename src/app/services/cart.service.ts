@@ -34,13 +34,24 @@ export class CartService {
   getBookQuantity(bookId: number): number {
     return this.cart[bookId] ? this.cart[bookId].quantity : 0;
   }
+
+  removeFromCart(bookId: number) {
+    if (this.cart[bookId]) {
+      delete this.cart[bookId];
+      console.log(`Removed book with ID: ${bookId} from the cart`);
+    } else {
+      console.log(`Book with ID: ${bookId} not found in the cart`);
+    }
+  }
+  
   
   getCart() {
     const cart = Object.values(this.cart);
     console.log('Cart Data:', cart);
-    return cart;  }
+    return cart;  
+  }
     clearCart(){
-      this.cart=[];
+      this.cart={};
     }
 
     getAuthorization() {

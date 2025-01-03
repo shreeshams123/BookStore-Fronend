@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BooksService } from '../../services/books.service';
 import { CartService } from 'src/app/services/cart.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
-import { UserService } from 'src/app/services/user.service';
+import { User, UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-book-details',
@@ -15,6 +15,7 @@ export class BookDetailsComponent implements OnInit{
   bookDetails:any={};
   bookQuantity:number=0;
   isInWishlist:boolean=false;
+  user:User={}
   constructor(private route:ActivatedRoute,private bookService:BooksService,public router:Router,private cartService:CartService,private wishlistService:WishlistService,private userService:UserService){
 
   }
@@ -29,6 +30,10 @@ export class BookDetailsComponent implements OnInit{
         console.error('Invalid book ID');
       }
     });
+    this.userService.currUserDetails.subscribe((user:any)=>{
+      this.user=user
+    })
+
   }
 
   private loadBookDetails(bookId: number) {
@@ -49,54 +54,61 @@ export class BookDetailsComponent implements OnInit{
 
   addToCart() {
     this.cartService.addToCart(this.bookDetails, 1); 
-        this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
-        console.log('Added to Cart. Current Quantity:', this.bookQuantity);
+    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
+    console.log('Added to Cart. Current Quantity:', this.bookQuantity);
+    if(this.user?.name){
+      const addRequestDto = {
+        bookId: this.bookDetails.bookId,
+        quantity: 1
+      };
 
-        // if(user){
-
-        // }
-    
-    // this.userService.currUserDetails.subscribe(user => {
-    //   if (user && user.token) {
-        
-    //   } else {
-    //     this.router.navigate(["login-prompt"]);
-    //   }
-    // });
-  }
+      this.cartService.addToCartApiCall(addRequestDto).subscribe({
+        next: (response) => {
+          console.log('Local item added to backend cart:', response);
+        },
+        error: (error) => {
+          console.error('Error adding local item to backend cart:', error);
+        }
+      }); 
+    }    
+}
   
   
   decreaseQuantity() {
     this.cartService.addToCart(this.bookDetails, -1); 
    this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
   console.log('Decreased Quantity. Current Quantity:', this.bookQuantity);
-    // this.userService.currUserDetails.subscribe(user=>{
-    //   if(user){
-        
-    //   }else{
-    //     this.router.navigate(["login-prompt"]);
-    //   }
-    // });
-   
+    if(this.user?.name){
+      const addRequestDto = {
+        bookId: this.bookDetails.bookId,
+        quantity: this.bookQuantity
+      };
+  this.cartService.updateCartApiCall(addRequestDto).subscribe({next:(res)=>{
+    console.log(res);
+  },
+error:(err)=>console.log(err)
+})
+    } 
   }
   
   increaseQuantity() {
     this.cartService.addToCart(this.bookDetails, 1); 
         this.bookQuantity = this.cartService.getBookQuantity(this.bookDetails.bookId); 
         console.log('Increased Quantity. Current Quantity:', this.bookQuantity);
-    // this.userService.currUserDetails.subscribe(user=>{
-    //   if(user){
+          if(this.user?.name){
+            const addRequestDto = {
+              bookId: this.bookDetails.bookId,
+              quantity: this.bookQuantity
+            };
+        this.cartService.updateCartApiCall(addRequestDto).subscribe({next:(res)=>{
+          console.log(res);
+        },
+      error:(err)=>console.log(err)
+      })
+          }
         
-    //   }else{
-    //     this.router.navigate(["login-prompt"]);
-    //   }
-    // });
   }
-
-
-  
-
-  toggleWishlist() {
+ toggleWishlist() {
     this.userService.currUserDetails.subscribe(user=>{
       if(user){
         if (this.isInWishlist) {

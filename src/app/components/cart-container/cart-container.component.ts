@@ -15,8 +15,8 @@ export class CartContainerComponent implements OnInit {
   cartItems:any
   addresses:any
   isExpanded:Boolean=false;
-  username:string|null='';
-  phone:string|null='';
+  username:any='abc'
+  phone:any='45273'
   subscription!:Subscription
   isAddingAddress:Boolean=false;
   showOrderSummary:Boolean=false;
@@ -48,9 +48,12 @@ constructor(private cartService:CartService,public router:Router,private custome
   handleUpdateCartList($event: {data: any, action: string}){
     const{data,action}=$event;
     if (action === 'remove') {
+      console.log("Inside cart container",data.details.bookId);
+      
       this.cartItems = this.cartItems.filter(
         (item: { details: { bookId: any }; }) => item.details.bookId !== data.details.bookId
       );
+      console.log(this.cartItems);
     } else if (action === 'update') {
       const updatedCartItems = this.cartItems.map((item: any) => {
         if (item.details.bookId === data.details.bookId) {
