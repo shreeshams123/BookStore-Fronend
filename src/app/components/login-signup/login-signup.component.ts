@@ -4,7 +4,10 @@ import { FloatLabelType } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MustMatch } from 'src/app/helper/must-match.validator';
 import { CartService } from 'src/app/services/cart.service';
+import { CustomerDetailsService } from 'src/app/services/customer-details.service';
+import { OrderService } from 'src/app/services/order.service';
 import { User, UserService } from 'src/app/services/user.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-login-signup',
@@ -20,7 +23,7 @@ export class LoginSignupComponent implements OnInit {
     loginErrorMessage:string=''
     signupSubmitted:boolean=false
     signupErrorMessage:string=''
-    constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private cartService:CartService) {}
+    constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private cartService:CartService,private customerService:CustomerDetailsService,private wishlistService:WishlistService,private orderService:OrderService) {}
   
     ngOnInit(): void {
       this.loginForm = this.formBuilder.group({
@@ -50,7 +53,7 @@ export class LoginSignupComponent implements OnInit {
     }
     get loginControls() { return this.loginForm.controls }
 
-    onLoginSubmit(): void {
+    onLoginSubmit() {
       console.log('login click');
       const { status = "", value } = this.loginForm;
       const { email, password } = value;
@@ -66,15 +69,25 @@ export class LoginSignupComponent implements OnInit {
           localStorage.setItem("userDetails", JSON.stringify(user));
           const userDetails: User = JSON.parse(localStorage.getItem("userDetails") || 'null');
           this.userService.updateUserDetails(userDetails);
-    
+
+          this.customerService.getCustomerApiCall().subscribe({next:(res:any)=>{
+            console.log("Address from backend",res);
+            const customerAddress=res.data[0]?.data||[];
+            customerAddress.forEach((address:any)=>{
+              this.customerService.addAddress(address);
+              })
+              console.log("address in customer service",this.customerService.getAddresses());
+              
+            },
+            error:(err)=>console.log(err)
+          })
           this.cartService.getCartApiCall().subscribe({
             next: (serverCartResponse: any) => {
               console.log(serverCartResponse);
-              
               const serverCart = serverCartResponse.data.cartItems.map((item: any) => ({
                 details: {
                   bookId: item.bookId,
-                  bookName: item.bookName,
+                  title: item.title,
                   description: item.description,
                   image: item.image,
                   author: item.author,
@@ -86,13 +99,68 @@ export class LoginSignupComponent implements OnInit {
               const localCart = this.cartService.getCart();
     
               this.synchronizeCart(localCart, serverCart);
-    
-              this.router.navigate(['/books-container']);
             },
             error: (err) => {
               console.log(err);
             },
           });
+          this.wishlistService.getWishListApicall().subscribe({next:(serverWishListRes:any)=>
+            {console.log("Wishlist response",serverWishListRes);
+              const serverWishList=serverWishListRes.data.map((item:any)=>({
+                bookId:item.bookId,
+                title:item.title,
+                description: item.description,
+                image: item.image,
+                author: item.author,
+                price: item.price
+              }));
+              console.log("server wishlist",serverWishList);
+              
+              const localWishlist=this.wishlistService.getWishlist();
+              console.log("localwishlist",localWishlist);
+              this.synchronizeWishList(serverWishList,localWishlist);
+            },
+            error:(err)=>
+            console.log(err)        
+          });
+          this.orderService.getOrderApiCall().subscribe({
+            next: (res: any) => {
+              console.log("Order response received:", res);
+          
+              const orders = Array.isArray(res?.data) ? res.data : [];
+              console.log("Orders to process:", orders);
+          
+              orders.forEach((order: any) => {
+                console.log("Processing order:", order);
+          
+                if (order.orderItems && Array.isArray(order.orderItems)) {
+                  // Process orderItems for this order
+                  order.orderItems.forEach((item: any) => {
+                    const orderItem = {
+                      ...item,
+                      date: order.date, 
+                      orderId: order.id, 
+                      status: order.status, // Attach order status for reference
+                    };
+                    console.log("Attempting to add item:", orderItem);
+          
+                    // Ensure no duplicates in service
+                    this.orderService.addOrder(orderItem);
+                  });
+                } else {
+                  console.warn("orderItems not found or invalid for order:", order);
+                }
+              });
+          
+              console.log("Final order list in service:", this.orderService.getOrders());
+            },
+            error: (err) => {
+              console.error("Error fetching orders:", err);
+            },
+          });
+          
+          
+          this.router.navigate(['/books-container']);
         },
         error: (err) => {
           console.log(err);
@@ -106,12 +174,8 @@ export class LoginSignupComponent implements OnInit {
           }, 3000);
         },
       });
-    }
-    
-
+}
     get signupControls() {return this.signupForm.controls};
-
-  
     onSignupSubmit(): void {
       console.log('signup click');
       const {status = "", value } = this.signupForm
@@ -166,8 +230,6 @@ export class LoginSignupComponent implements OnInit {
           });
           return;
       }
-  
-  
       serverCart.forEach(serverItem => {
         const localItem = localCart.find(item => item.details.bookId === serverItem.details.bookId);
     
@@ -208,11 +270,78 @@ export class LoginSignupComponent implements OnInit {
       console.log('Frontend Cart after sync:', this.cartService.getCart());
     }
 
-  
+    synchronizeWishList(serverWishList:any[],localWishlist:any[]){
+      if(localWishlist.length==0 && serverWishList.length===0){
+        return;
+      }
+      if(localWishlist.length>0 && serverWishList.length===0){
+        console.log(serverWishList.length);
+        console.log("backend wishlist is empty adding items from local to server");
+        localWishlist.forEach((item)=>{
+          console.log(item.bookId);
+          const addRequesetDto={
+            bookId:item.bookId
+          }
+          this.wishlistService.addToWishListApicall(addRequesetDto).subscribe({next:(res:any)=>{
+            console.log(res);
+            
+          },
+        error:(err)=>{
+          console.log(err);  
+        }})
+        })
+      }
+      if(serverWishList.length>0 && localWishlist.length===0){
+        console.log("local wishlist is empty");
+        serverWishList.forEach((item)=>{
+          this.wishlistService.addToWishlist(item);
+          console.log(this.wishlistService.getWishlist());
+        });
+      }
+      if (serverWishList.length > 0 && localWishlist.length === 0) {
+        console.log("Local wishlist is empty.");
+        serverWishList.forEach((item) => {
+          this.wishlistService.addToWishlist(item);
+          console.log(this.wishlistService.getWishlist());
+        });
+      }
+    
+      if (serverWishList.length > 0 && localWishlist.length > 0) {
+        console.log("Both server and local wishlists have items. Synchronizing...");
+    
+        const booksToAddToServer = localWishlist.filter(
+          (localItem) => !serverWishList.some((serverItem) => serverItem.bookId === localItem.bookId)
+        );
+    
+        const booksToAddToLocal = serverWishList.filter(
+          (serverItem) => !localWishlist.some((localItem) => localItem.bookId === serverItem.bookId)
+        );
+    
+        booksToAddToServer.forEach((item) => {
+          const addRequestDto = { bookId: item.bookId };
+          this.wishlistService.addToWishListApicall(addRequestDto).subscribe({
+            next: (res: any) => {
+              console.log(`Added to server: ${item.bookId}`);
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        });
+    
+        booksToAddToLocal.forEach((item) => {
+          this.wishlistService.addToWishlist(item);
+          console.log(`Added to local: ${item.bookId}`);
+        });
+    
+        console.log("Synchronization complete.");
+
+
+    }
     }
     
   
-    
+  }
       
     
   

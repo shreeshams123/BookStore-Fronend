@@ -109,19 +109,30 @@ error:(err)=>console.log(err)
         
   }
  toggleWishlist() {
-    this.userService.currUserDetails.subscribe(user=>{
-      if(user){
+
         if (this.isInWishlist) {
           this.wishlistService.removeFromWishlist(this.bookDetails.bookId);
+          if(this.user?.name){
+            this.wishlistService.deleteFromWishListApicall(this.bookDetails.bookId).subscribe({next:(res:any)=>{
+              console.log(res);
+              
+            },error:(err)=>{
+              console.log(err);
+              
+            }})
+          }
         } else {
           this.wishlistService.addToWishlist(this.bookDetails);
+          if(this.user?.name){
+            this.wishlistService.addToWishListApicall({bookId:this.bookDetails.bookId}).subscribe({next:(res:any)=>{
+              console.log(res);  
+            },error:(err)=>{
+              console.log(err);
+            }})
+          }
         }
         this.isInWishlist = this.wishlistService.isInWishlist(this.bookDetails.bookId);
         console.log('isInWishlist after toggle:', this.isInWishlist);
-      }else{
-        this.router.navigate(["login-prompt"]);
-      }
-    });
    
   }
   

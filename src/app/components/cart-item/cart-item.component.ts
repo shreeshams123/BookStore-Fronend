@@ -80,6 +80,14 @@ export class CartItemComponent implements OnInit {
   handleDeleteFromWishlist(){
     console.log(this.item.bookId);
     this.wishlistService.removeFromWishlist(this.item.bookId);
+    if(this.user?.name){
+      this.wishlistService.deleteFromWishListApicall(this.item.bookId).subscribe({next:(res:any)=>{
+        console.log(res);
+        },
+      error:(err)=>{
+        console.log(err); 
+      }})
+    }
     this.updateList.emit({data:this.item,action:'remove'});
   }
 

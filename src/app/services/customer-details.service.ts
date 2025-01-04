@@ -12,10 +12,9 @@ export class CustomerDetailsService {
 
   }
 
-  addAddress(newAddress: { type: string; address: string; city: string; state: string }) {
-    const newId = (this.currentId++).toString();  
-    const addressWithId = { id: newId, ...newAddress };
-    this.addresses.push(addressWithId);
+  addAddress(newAddress: any) {
+    
+    this.addresses.push(newAddress);
   }
 
   getAddresses() {
@@ -28,6 +27,10 @@ export class CustomerDetailsService {
       this.addresses[addressIndex] = { ...this.addresses[addressIndex], ...updatedDetails };
     }
   }
+clearAddress(){
+  this.addresses=[];
+}
+
     getAuthorization() {
         const userDetails = localStorage.getItem('userDetails'); 
         if (userDetails) {
@@ -42,13 +45,13 @@ export class CustomerDetailsService {
         }
       }
   addCustomerApicall(data:any){
-    this.httpService.postApiCall(`https://localhost:7128/api/customerDetails`,data,{ headers: this.getAuthorization() })
+    return this.httpService.postApiCall(`https://localhost:7128/api/customerDetails`,data,{ headers: this.getAuthorization() })
   }
   getCustomerApiCall(){
-    this.httpService.getApiCall(`https://localhost:7128/api/customerDetails`,{ headers: this.getAuthorization() })
+    return this.httpService.getApiCall(`https://localhost:7128/api/customerDetails`,{ headers: this.getAuthorization() })
   }
   editCustomerApicall(data:any,addressId:any){
-    this.httpService.patchApiCall(`https://localhost:7128/api/customerDetails/${addressId}`,data,{ headers: this.getAuthorization() })
+    return this.httpService.patchApiCall(`https://localhost:7128/api/customerDetails/${addressId}`,data,{ headers: this.getAuthorization() })
   }
-
+  
 }

@@ -26,6 +26,19 @@ export class AddressItemComponent {
 
   toggleEdit() {
     if (this.isEditing) {
+      console.log(this.item.id);
+      const editAddressDto={
+        address:this.editAddress,
+        city:this.editCity,
+        state:this.editState
+      }
+      this.customerDetailsService.editCustomerApicall(editAddressDto,this.item.id).subscribe({next:(res)=>{
+        console.log(res);       
+      },
+    error:(err)=>{
+      console.log(err);  
+    }
+    })
       this.customerDetailsService.updateAddress(this.item.id, {
         address: this.editAddress,
         city: this.editCity,
@@ -38,7 +51,7 @@ export class AddressItemComponent {
     }
 
     this.isEditing = !this.isEditing; 
-    console.log(this.customerDetailsService.getAddresses());
+    console.log("Address after updating",this.customerDetailsService.getAddresses());
     
   }
 

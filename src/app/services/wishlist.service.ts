@@ -44,13 +44,16 @@ export class WishlistService {
         }
    }
    addToWishListApicall(data:any){
-    this.httpService.postApiCall(`https://localhost:7128//api/wishlist`,data,{ headers: this.getAuthorization() });
+    return this.httpService.postApiCall(`https://localhost:7128/api/wishlist`,data,{ headers: this.getAuthorization() });
    }
    getWishListApicall(){
-    this.httpService.getApiCall(`https://localhost:7128//api/wishlist`,{ headers: this.getAuthorization() });
+    return this.httpService.getApiCall(`https://localhost:7128/api/wishlist`,{ headers: this.getAuthorization() });
   }
   deleteFromWishListApicall(data:any){
-    this.httpService.deleteApiCall(`https://localhost:7128//api/${data}`,{ headers: this.getAuthorization() });
+    return this.httpService.deleteApiCall(`https://localhost:7128/api/wishlist/${data}`,{ headers: this.getAuthorization() });
 
+  }
+  clearWishlist(){
+    this.wishlist=[]
   }
 }

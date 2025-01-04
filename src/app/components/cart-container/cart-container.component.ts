@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CustomerDetailsService } from 'src/app/services/customer-details.service';
 import { OrderService } from 'src/app/services/order.service';
-import { UserService } from 'src/app/services/user.service';
+import { User, UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-cart-container',
@@ -15,12 +15,14 @@ export class CartContainerComponent implements OnInit {
   cartItems:any
   addresses:any
   isExpanded:Boolean=false;
-  username:any='abc'
-  phone:any='45273'
+  username:any=''
+  phone:any=''
+  user:User={}
   subscription!:Subscription
   isAddingAddress:Boolean=false;
   showOrderSummary:Boolean=false;
   totalPrice: number = 0;
+
   newAddress = {
     type: '',
     address: '',
@@ -34,6 +36,7 @@ constructor(private cartService:CartService,public router:Router,private custome
     this.addresses=this.customerService.getAddresses();
     this.subscription = this.userService.currUserDetails.subscribe((user) => {
       if (user && user.token) {
+        this.user=user;
         this.username=user.name;
         this.phone=user.phone;
       } 
@@ -43,7 +46,13 @@ constructor(private cartService:CartService,public router:Router,private custome
     
   }
   toggleExpand(){
+
+    if(this.user?.name){
     this.isExpanded=!this.isExpanded;
+    }
+    else{
+      this.router.navigate(['login-prompt']);  
+    }
   }
   handleUpdateCartList($event: {data: any, action: string}){
     const{data,action}=$event;
@@ -78,15 +87,28 @@ constructor(private cartService:CartService,public router:Router,private custome
         this.newAddress.city &&
         this.newAddress.state
       ) {
-        this.customerService.addAddress({ ...this.newAddress });
-        this.addresses = this.customerService.getAddresses();
+        const addressData = {
+          addressType: this.newAddress.type,
+          name: this.username,  
+          phone: this.phone, 
+          address: this.newAddress.address,
+          city: this.newAddress.city,
+          state: this.newAddress.state,
+        };
+        this.customerService.addCustomerApicall(addressData).subscribe({next:(res:any)=>{
+          console.log(res);  
+          this.customerService.addAddress(res.data);
+          // this.addresses = this.customerService.getAddresses();
+        },
+      error:(err)=>{
+        console.log(err); 
+      }})
         this.newAddress = { type: '', address: '', city: '', state: '' };
         this.isAddingAddress = false;
       } else {
         alert('Please fill out all fields.');
       }
       console.log(this.customerService.getAddresses());
-      console.log(this.addresses);
     }
     
     handleaddresslist(selectedAddressId: string) {
@@ -106,12 +128,20 @@ constructor(private cartService:CartService,public router:Router,private custome
     }
     checkOut(){
       if (this.cartItems.length > 0) {
+        console.log("Cart items",this.cartItems);
+        
         this.orderService.addOrder({
           items: this.cartItems,
           addressId: this.selectedAddressId,
           orderDate: new Date(),
         });
-  
+    //  this.orderService.addOrderApiCall({addressId:this.selectedAddressId}).subscribe({next:(res:any)=>{
+    //   console.log(res);
+    //  },
+    // error:(err)=>{
+    //   console.log(err);
+      
+    // }})
         this.cartItems = [];
         this.cartService.clearCart();
   

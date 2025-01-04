@@ -45,8 +45,22 @@ addAddress() {
     this.newAddress.city &&
     this.newAddress.state
   ) {
-    this.customerService.addAddress({ ...this.newAddress });
-    this.addresses = this.customerService.getAddresses();
+    const addressData = {
+      addressType: this.newAddress.type,
+      name: this.username,  
+      phone: this.phone, 
+      address: this.newAddress.address,
+      city: this.newAddress.city,
+      state: this.newAddress.state,
+    };
+    this.customerService.addCustomerApicall(addressData).subscribe({next:(res:any)=>{
+      console.log(res);  
+      this.customerService.addAddress(res.data);
+      // this.addresses = this.customerService.getAddresses();
+    },
+  error:(err)=>{
+    console.log(err); 
+  }})
     this.newAddress = { type: '', address: '', city: '', state: '' };
     this.isAddingAddress = false;
   } else {
