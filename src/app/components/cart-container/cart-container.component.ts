@@ -126,29 +126,38 @@ constructor(private cartService:CartService,public router:Router,private custome
       }
       this.calculateTotalPrice();
     }
-    checkOut(){
-      if (this.cartItems.length > 0) {
-        console.log("Cart items",this.cartItems);
-        
-        this.orderService.addOrder({
-          items: this.cartItems,
-          addressId: this.selectedAddressId,
-          orderDate: new Date(),
-        });
-    //  this.orderService.addOrderApiCall({addressId:this.selectedAddressId}).subscribe({next:(res:any)=>{
-    //   console.log(res);
-    //  },
-    // error:(err)=>{
-    //   console.log(err);
-      
-    // }})
-        this.cartItems = [];
-        this.cartService.clearCart();
-  
-      this.router.navigate(["/orderSuccess"])
+    checkOut() {
+      this.orderService.addOrderApiCall({ addressId: this.selectedAddressId }).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          
+          this.cartItems.forEach((cartItem: any) => {
+            const orderItem = {
+              bookId: cartItem.details.bookId,
+              title: cartItem.details.title,
+              author: cartItem.details.author,
+              description: cartItem.details.description,
+              bookPrice: cartItem.details.price,
+              image: cartItem.details.image,
+              quantity: cartItem.quantity,
+            };
+            
+            this.orderService.addOrder(orderItem);
+            console.log("Added to order list:", orderItem);
+          });
     
+          console.log("Orders after checkout", this.orderService.getOrders());
+          this.cartItems = [];  
+          this.cartService.clearCart();  
+    
+          this.router.navigate(["/orderSuccess"]);
+        },
+        error: (err) => {
+          console.log("Error while checking out:", err);
+        }
+      });
     }
-  }
+    
   calculateTotalPrice() {
     this.totalPrice = this.cartItems.reduce((sum: number, item: { details: { price: number; }; quantity: number; }) => {
       return sum + (item.details.price * item.quantity);

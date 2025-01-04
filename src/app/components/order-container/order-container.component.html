@@ -7,24 +7,22 @@
     <div *ngIf="orderItems.length>0 else emptyCart">
     <h3 class="order-title">Order Details</h3>
   
-    <div *ngFor="let order of orderItems" class="order">
-      <div *ngFor="let item of order.items" class="order-item">
+    <div *ngFor="let order of orderItems" class="order-item">
         <div class="order-item-image-container">
           <img
-            [src]="'data:image/jpeg;base64,' + item.details.image"
+            [src]="'data:image/jpeg;base64,' + order.image"
             alt="Book Image"
             class="order-item-image"
           />
         </div>
   
         <div class="item-info">
-          <h4 class="order-item-title">{{ item.details.title }}</h4>
-          <p class="order-item-author">by {{ item.details.author }}</p>
-          <p class="order-item-price">Price: Rs.{{ item.details.price }}</p>
-          <p class="order-item-quantity">Quantity: {{ item.quantity }}</p>
-          <p class="order-item-orderDate">Order Date: {{ order.orderDate | date: 'mediumDate' }}</p>
+          <h4 class="order-item-title">{{ order.title }}</h4>
+          <p class="order-item-author">by {{ order.author }}</p>
+          <p class="order-item-price">Price: Rs.{{ order.bookPrice }}</p>
+          <p class="order-item-quantity">Quantity: {{ order.quantity }}</p>
+          <p class="order-item-orderDate">Order Date: {{ order.date | date: 'mediumDate' }}</p>
         </div>
-      </div>
     </div>
 </div>
     <ng-template #emptyCart>
