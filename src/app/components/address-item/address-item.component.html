@@ -1,7 +1,7 @@
 <div class="address-item">
     <div class="address-header">
         <input type="radio" name="address" [value]="item.id" (change)="onAddressSelect()">
-        <span class="address-type">{{ item.type }}</span>
+        <span class="address-type">{{ item.addressType }}</span>
       <button class="edit-button" (click)="toggleEdit()">
         {{ isEditing ? 'Save' : 'Edit' }}
       </button>

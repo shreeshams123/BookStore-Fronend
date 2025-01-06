@@ -26,6 +26,8 @@ import { OrderContainerComponent } from './components/order-container/order-cont
 import { MatInputModule } from '@angular/material/input';
 import { LoginPromptComponent } from './components/login-prompt/login-prompt.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +58,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     HttpClientModule,
     FormsModule,
     MatTabsModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -43,11 +43,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  overflow-y: auto; /* Allow scrolling if content exceeds height */
+  overflow-y: auto; 
 }
 
 
-/* Image Styling */
 img {
   height: auto;
   width: 100%;
@@ -57,7 +56,6 @@ img {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Text Styling */
 .right-content {
   font: normal normal medium 18px/24px Roboto;
   letter-spacing: 1px;
@@ -67,7 +65,6 @@ img {
   font-weight: bold;
 }
 
-/* Login/Signup Navigation */
 .login-signup-navigation {
   display: flex;
   justify-content: space-evenly;
@@ -86,7 +83,6 @@ img {
   border: 2px solid #0A0102;
 }
 
-/* Label Styling */
 label {
   text-align: left;
   font: normal normal normal 10px/13px Roboto;
@@ -96,7 +92,6 @@ label {
   opacity: 1;
 }
 
-/* Alignment for error messages */
 .align-right {
   text-align: right;
   display: block;
@@ -105,7 +100,6 @@ label {
   color: #e27171;
 }
 
-/* Button Styling */
 button {
   width: 100%;
 }
@@ -127,7 +121,6 @@ button {
   background-color: #8c292f;
 }
 
-/* Divider Line */
 .divide-line {
   display: flex;
   align-items: center;

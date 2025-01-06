@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
@@ -6,6 +7,7 @@ import { CustomerDetailsService } from 'src/app/services/customer-details.servic
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 import { WishlistService } from 'src/app/services/wishlist.service';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +19,7 @@ export class DashboardComponent implements OnInit {
   isLoggedIn:boolean=false;
   username: any
   subscription!:Subscription
-  constructor(private router:Router,private dataService:DataService,public userService:UserService,private cartService:CartService,private customerService:CustomerDetailsService,private wishlistService:WishlistService){
+  constructor(private router:Router,private dataService:DataService,public userService:UserService,private cartService:CartService,private customerService:CustomerDetailsService,private wishlistService:WishlistService,private dialog: MatDialog){
 
   }
   ngOnInit(): void {
@@ -52,6 +54,10 @@ export class DashboardComponent implements OnInit {
     this.username = null;
     this.isLoggedIn = false;
     this.router.navigate(["/books-container"]);  
+  }
+
+  openLogin(){
+    let dialogRef=this.dialog.open(LoginSignupComponent)
   }
   
 }

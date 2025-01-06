@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FloatLabelType } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { MustMatch } from 'src/app/helper/must-match.validator';
@@ -23,7 +24,7 @@ export class LoginSignupComponent implements OnInit {
     loginErrorMessage:string=''
     signupSubmitted:boolean=false
     signupErrorMessage:string=''
-    constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private cartService:CartService,private customerService:CustomerDetailsService,private wishlistService:WishlistService,private orderService:OrderService) {}
+    constructor(private formBuilder: FormBuilder,private userService:UserService,private router:Router,private cartService:CartService,private customerService:CustomerDetailsService,private wishlistService:WishlistService,private orderService:OrderService,@Optional() public dialogRef: MatDialogRef<LoginSignupComponent>) {}
   
     ngOnInit(): void {
       this.loginForm = this.formBuilder.group({
@@ -134,17 +135,15 @@ export class LoginSignupComponent implements OnInit {
                 console.log("Processing order:", order);
           
                 if (order.orderItems && Array.isArray(order.orderItems)) {
-                  // Process orderItems for this order
                   order.orderItems.forEach((item: any) => {
                     const orderItem = {
                       ...item,
                       date: order.date, 
                       orderId: order.id, 
-                      status: order.status, // Attach order status for reference
+                      status: order.status, 
                     };
                     console.log("Attempting to add item:", orderItem);
           
-                    // Ensure no duplicates in service
                     this.orderService.addOrder(orderItem);
                   });
                 } else {
@@ -159,7 +158,7 @@ export class LoginSignupComponent implements OnInit {
             },
           });
           
-          
+          this.dialogRef.close();
           this.router.navigate(['/books-container']);
         },
         error: (err) => {

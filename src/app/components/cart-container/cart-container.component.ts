@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CustomerDetailsService } from 'src/app/services/customer-details.service';
 import { OrderService } from 'src/app/services/order.service';
 import { User, UserService } from 'src/app/services/user.service';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-cart-container',
@@ -30,7 +32,7 @@ export class CartContainerComponent implements OnInit {
     state: '',
   };
   selectedAddressId: string = '';
-constructor(private cartService:CartService,public router:Router,private customerService:CustomerDetailsService,private orderService:OrderService,private userService:UserService){}
+constructor(private cartService:CartService,public router:Router,private customerService:CustomerDetailsService,private orderService:OrderService,private userService:UserService,private dialog: MatDialog){}
   ngOnInit(): void {
     this.cartItems=this.cartService.getCart();
     this.addresses=this.customerService.getAddresses();
@@ -51,7 +53,7 @@ constructor(private cartService:CartService,public router:Router,private custome
     this.isExpanded=!this.isExpanded;
     }
     else{
-      this.router.navigate(['login-prompt']);  
+      let dialogRef=this.dialog.open(LoginSignupComponent)
     }
   }
   handleUpdateCartList($event: {data: any, action: string}){
@@ -98,7 +100,6 @@ constructor(private cartService:CartService,public router:Router,private custome
         this.customerService.addCustomerApicall(addressData).subscribe({next:(res:any)=>{
           console.log(res);  
           this.customerService.addAddress(res.data);
-          // this.addresses = this.customerService.getAddresses();
         },
       error:(err)=>{
         console.log(err); 
